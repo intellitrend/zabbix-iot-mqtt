@@ -1,0 +1,127 @@
+zabbix_export:
+  version: '5.2'
+  date: '2020-10-13T07:30:08Z'
+  groups:
+    -
+      name: IntelliMon
+  hosts:
+    -
+      host: im.ims-040B0BBF713C
+      name: 'Sales Room'
+      templates:
+        -
+          name: 'IMS-Smart Sensor MQTT'
+      groups:
+        -
+          name: IntelliMon
+      macros:
+        -
+          macro: '{$MQTT_BROKER}'
+          value: iot.intellitrend.de
+        -
+          macro: '{$MQTT_PASS}'
+          value: intellitrend
+        -
+          macro: '{$MQTT_TOPIC}'
+          value: office/bielefeld/salesroom
+        -
+          macro: '{$MQTT_USER}'
+          value: public
+      inventory:
+        type: IMS-Smart
+        serialno_a: 040B0BBF713C
+        contact: 'IntelliTrend Monitoring Team'
+        location: 'Sales Room'
+        location_lat: '52.013798'
+        location_lon: '8.565642'
+      inventory_mode: AUTOMATIC
+    -
+      host: im.ims-80D478BF713C
+      name: 'Support Room'
+      templates:
+        -
+          name: 'IMS-Smart Sensor MQTT'
+      groups:
+        -
+          name: IntelliMon
+      macros:
+        -
+          macro: '{$MQTT_BROKER}'
+          value: iot.intellitrend.de
+        -
+          macro: '{$MQTT_PASS}'
+          value: intellitrend
+        -
+          macro: '{$MQTT_TOPIC}'
+          value: office/bielefeld/supportroom
+        -
+          macro: '{$MQTT_USER}'
+          value: public
+      inventory:
+        type: IMS-Smart
+        serialno_a: 80D478BF713C
+        contact: 'IntelliTrend Monitoring Team'
+        location: 'Support Room'
+        location_lat: '52.013798'
+        location_lon: '8.565642'
+      inventory_mode: AUTOMATIC
+    -
+      host: im.ims-94B71112CFA4
+      name: 'Training Room'
+      templates:
+        -
+          name: 'IMS-Smart Sensor MQTT'
+      groups:
+        -
+          name: IntelliMon
+      macros:
+        -
+          macro: '{$MQTT_BROKER}'
+          value: iot.intellitrend.de
+        -
+          macro: '{$MQTT_PASS}'
+          value: intellitrend
+        -
+          macro: '{$MQTT_TOPIC}'
+          value: office/bielefeld/trainingroom
+        -
+          macro: '{$MQTT_USER}'
+          value: public
+      inventory:
+        type: IMS-Smart
+        serialno_a: 94B71112CFA4
+        contact: 'IntelliTrend Monitoring Team'
+        location: 'Training Room'
+        location_lat: '52.013798'
+        location_lon: '8.565642'
+      inventory_mode: AUTOMATIC
+    -
+      host: im.ims-603E9BC40A24
+      name: 'Server Room'
+      templates:
+        -
+          name: 'IMS-Smart Sensor MQTT'
+      groups:
+        -
+          name: IntelliMon
+      macros:
+        -
+          macro: '{$MQTT_BROKER}'
+          value: iot.intellitrend.de
+        -
+          macro: '{$MQTT_PASS}'
+          value: intellitrend
+        -
+          macro: '{$MQTT_TOPIC}'
+          value: office/bielefeld/serverroom
+        -
+          macro: '{$MQTT_USER}'
+          value: public
+      inventory:
+        type: IMS-Smart
+        serialno_a: 603E9BC40A24
+        contact: 'IntelliTrend Monitoring Team'
+        location: 'Server Room'
+        location_lat: '52.013798'
+        location_lon: '8.565642'
+      inventory_mode: AUTOMATIC

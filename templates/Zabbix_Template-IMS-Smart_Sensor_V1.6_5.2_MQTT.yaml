@@ -1,0 +1,1280 @@
+zabbix_export:
+  version: '5.2'
+  date: '2020-10-12T12:56:18Z'
+  groups:
+    -
+      name: IntelliMon
+  templates:
+    -
+      template: 'IMS-Smart Sensor MQTT'
+      name: 'IMS-Smart Sensor MQTT'
+      description: 'Template for wireless IntelliMon sensor with MQTT support, version 1.6'
+      groups:
+        -
+          name: IntelliMon
+      applications:
+        -
+          name: 'Device info'
+        -
+          name: Fails
+        -
+          name: 'Sensor availability'
+        -
+          name: 'Sensor data'
+        -
+          name: Stats
+      items:
+        -
+          name: 'Battery charge [%]'
+          type: DEPENDENT
+          key: batterycharge
+          delay: '0'
+          history: 180d
+          units: '%'
+          description: 'Battery charge in percent.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.batterycharge
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{last()}<15'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: '{last()}>20'
+              name: '[{HOST.NAME}] - Sensor: Battery charge low [<15%]'
+              priority: HIGH
+              description: 'Battery charge below 15%.'
+              manual_close: 'YES'
+            -
+              expression: '{last()}<30'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: '{last()}>35'
+              name: '[{HOST.NAME}] - Sensor: Battery charge low [<30%]'
+              priority: WARNING
+              description: 'Battery charge below 30%.'
+              manual_close: 'YES'
+              dependencies:
+                -
+                  name: '[{HOST.NAME}] - Sensor: Battery charge low [<15%]'
+                  expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}<15'
+                  recovery_expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}>20'
+            -
+              expression: '{last()}<50'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: '{last()}>55'
+              name: '[{HOST.NAME}] - Sensor: Battery charge low [<50%]'
+              priority: INFO
+              description: 'Battery charge below 50%.'
+              manual_close: 'YES'
+              dependencies:
+                -
+                  name: '[{HOST.NAME}] - Sensor: Battery charge low [<30%]'
+                  expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}<30'
+                  recovery_expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}>35'
+        -
+          name: 'Fails [connection]'
+          type: DEPENDENT
+          key: cfails
+          delay: '0'
+          description: 'Failed connection attempts.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.cfails
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: Contact
+          type: DEPENDENT
+          key: contact
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          description: 'Contact information.'
+          inventory_link: CONTACT
+          applications:
+            -
+              name: 'Device info'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.contact
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Device type'
+          type: DEPENDENT
+          key: devicetype
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          description: 'The type of the device.'
+          inventory_link: TYPE
+          applications:
+            -
+              name: 'Device info'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.devicetype
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Dew point [C]'
+          type: DEPENDENT
+          key: dew
+          delay: '0'
+          value_type: FLOAT
+          units: C
+          description: 'Calculated dew point in degrees Celsius.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.dew
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Equivalent carbon-dioxide eCO2 [ppm]'
+          type: DEPENDENT
+          key: eco2
+          delay: '0'
+          units: ppm
+          description: 'eCO2 (equivalent calculated carbon-dioxide) concentration within a range of 400 to 8192 parts per million (ppm).'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.eco2
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Error [Env]'
+          type: DEPENDENT
+          key: enverror
+          delay: '0'
+          description: 'Number of failed environment sensor readings.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.enverror
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Geo latitude'
+          type: DEPENDENT
+          key: geolatitude
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          description: 'Latitude of the device location.'
+          inventory_link: LOCATION_LAT
+          applications:
+            -
+              name: 'Device info'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.geolatitude
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Geo longitude'
+          type: DEPENDENT
+          key: geolongitude
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          description: 'Longitude of the device location.'
+          inventory_link: LOCATION_LON
+          applications:
+            -
+              name: 'Device info'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.geolongitude
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Environment sensor found'
+          type: DEPENDENT
+          key: hasenv
+          delay: '0'
+          description: 'Environment sensor found.'
+          applications:
+            -
+              name: 'Sensor availability'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.hasenv
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'IAQ sensor found'
+          type: DEPENDENT
+          key: hasiaq
+          delay: '0'
+          description: 'IAQ sensor found.'
+          applications:
+            -
+              name: 'Sensor availability'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.hasiaq
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'External temp sensor found'
+          type: DEPENDENT
+          key: hastempe
+          delay: '0'
+          description: 'External temp sensor found.'
+          applications:
+            -
+              name: 'Sensor availability'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.hastempe
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Humidity [%]'
+          type: DEPENDENT
+          key: hum
+          delay: '0'
+          value_type: FLOAT
+          units: '%'
+          description: 'Air humidity in percent.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.hum
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'IAQ baseline'
+          type: DEPENDENT
+          key: iaqbaseline
+          delay: '0'
+          description: 'IAQ baseline after last measurement.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.iaqbaseline
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'IAQ disabled [Status]'
+          type: DEPENDENT
+          key: iaqdisabled
+          delay: '0'
+          description: |
+            IAQ sensor status.
+            0 = enabled
+            1 = disabled
+          applications:
+            -
+              name: 'Sensor data'
+          valuemap:
+            name: IMS-Smart-IAQStatus
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.iaqdisabled
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Error [IAQ]'
+          type: DEPENDENT
+          key: iaqerror
+          delay: '0'
+          description: |
+            Status of IAQ sensor reading. Values:
+            0:CCS811_OK,
+            1:CCS811_AVAILABILITY_FAILED,
+            2:CCS811_READING_FAILED,
+            3:CCS811_WRONG_VALUE
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.iaqerror
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Error [IAQ Internal]'
+          type: DEPENDENT
+          key: iaqerrorstatus
+          delay: '0'
+          description: |
+            Status of internal sensor reading. Only useful if iaderror is > 0.
+            0:SENSOR_SUCCESS,
+            1:SENSOR_ID_ERROR,
+            2:SENSOR_I2C_ERROR,
+            3:SENSOR_INTERNAL_ERROR,
+            4:SENSOR_GENERIC_ERROR
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.iaqerrorstatus
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'IAQ heating time [sec]'
+          type: DEPENDENT
+          key: iaqheatingtime
+          delay: '0'
+          units: '!sec'
+          description: 'Time to heat-up the IAQ sensor before a valid measurement can be taken. Changes to this values have a strong impact on iad readings and battery lifetime.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.iaqheatingtime
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: Interval
+          type: DEPENDENT
+          key: interval
+          delay: '0'
+          units: Minutes
+          description: 'Measurement interval in minutes.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.interval
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: Location
+          type: DEPENDENT
+          key: location
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          description: 'Name of the device location.'
+          inventory_link: LOCATION
+          applications:
+            -
+              name: 'Device info'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.location
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Sensor data master'
+          type: ZABBIX_ACTIVE
+          key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          applications:
+            -
+              name: 'Sensor data'
+        -
+          name: 'OTA config interval [measurements]'
+          type: DEPENDENT
+          key: otaconfiginterval
+          delay: '0'
+          units: Measurements
+          description: 'Number of measurements before checking for a configuration update.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.otaconfiginterval
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'OTA config [status]'
+          type: DEPENDENT
+          key: otaconfigstatus
+          delay: '0'
+          description: |
+            Status of OTA configuration
+            0:NO_REQUEST
+            1=INACTIVE
+            2=NOT_CHANGED,
+            3=CHANGED
+            4=SERVER_UNREACHABLE
+            5=SENSOR_NOT_FOUND
+            6=ERROR
+          applications:
+            -
+              name: Stats
+          valuemap:
+            name: IMS-Smart-OTAStatus
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.otaconfigstatus
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'OTA firmware interval [measurements]'
+          type: DEPENDENT
+          key: otafwinterval
+          delay: '0'
+          units: Measurements
+          description: 'Number of measurements before checking for a firmware update.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.otafwinterval
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Air pressure [Pa]'
+          type: DEPENDENT
+          key: press
+          delay: '0'
+          history: 180d
+          value_type: FLOAT
+          units: P
+          description: 'Absolute air pressure in Pascal.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.press
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Reason [Restart]'
+          type: DEPENDENT
+          key: rreason
+          delay: '0'
+          description: |
+            Reason for last restart: 
+            1=PowerOn / Reset
+            5=DeepSleep
+            15=Brownout
+          applications:
+            -
+              name: Stats
+          valuemap:
+            name: IMS-Smart-RestartReasons
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.rreason
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{last()}=15'
+              name: '[{HOST.NAME}] - Sensor: Brownout detected'
+              description: 'Brownout detected. The supply voltage was below the critical threshold and caused the device to reset. This usually means the battery is nearly empty or there are issues with the power supply.'
+        -
+          name: 'WiFi RSSI [dBm]'
+          type: DEPENDENT
+          key: rssi
+          delay: '0'
+          value_type: FLOAT
+          units: dBm
+          description: 'The received WiFi field strength of the connected access point in dBm.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.rssi
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{nodata(90m)}=1'
+              name: '[{HOST.NAME}] - Sensor: Missing data [>90Min]'
+              description: 'No data since 90 minutes.'
+        -
+          name: 'Connect time server [sec]'
+          type: DEPENDENT
+          key: sctime
+          delay: '0'
+          value_type: FLOAT
+          units: '!sec'
+          description: 'The time it takes to connect to the Zabbix server.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.sctime
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Serial number'
+          type: DEPENDENT
+          key: serial
+          delay: '0'
+          trends: '0'
+          value_type: CHAR
+          description: 'The serial number of the device, which is also part of the MAC address.'
+          inventory_link: SERIALNO_A
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.serial
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Fails [Sensors]'
+          type: DEPENDENT
+          key: sfails
+          delay: '0'
+          description: 'Number of failed readings of any sensor.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.sfails
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{last()}>0'
+              name: '[{HOST.NAME}] - Sensor: Sensor reading failed'
+              description: 'The last Sensor reading failed.'
+        -
+          name: 'Temperature [C]'
+          type: DEPENDENT
+          key: temp
+          delay: '0'
+          value_type: FLOAT
+          units: C
+          description: 'Temperature in degrees Celsius for the internal sensor.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.temp
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Temperature external [C]'
+          type: DEPENDENT
+          key: tempe
+          delay: '0'
+          value_type: FLOAT
+          units: C
+          description: 'Temperature in degrees Celsius for the external sensor.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.tempe
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Error [TempE]'
+          type: DEPENDENT
+          key: tempeerror
+          delay: '0'
+          description: 'Number of failed readings of the external temperature sensor.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.tempeerror
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Fails [Transmission]'
+          type: DEPENDENT
+          key: tfails
+          delay: '0'
+          description: 'Numer of failed transmission attempts.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.tfails
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Total volatile organic compound TVOC [ppb]'
+          type: DEPENDENT
+          key: tvoc
+          delay: '0'
+          units: ppb
+          description: 'TVOC (total volatile organic compound) concentration within a range of 0 to 1187 parts per billion (ppb).'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.tvoc
+              error_handler: DISCARD_VALUE
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'VCC [V]'
+          type: DEPENDENT
+          key: vcc
+          delay: '0'
+          value_type: FLOAT
+          units: V
+          description: 'Battery voltage.'
+          applications:
+            -
+              name: 'Sensor data'
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.vcc
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{avg(#4)}<3.0'
+              name: '[{HOST.NAME}] - Sensor: VCC low [<3.00V]'
+              description: 'Current input is below 3V. Power supply or battery is too weak.'
+        -
+          name: 'Firmware [Version]'
+          type: DEPENDENT
+          key: version
+          delay: '0'
+          trends: '0'
+          value_type: CHAR
+          description: 'Version of the currently installed firmware.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.version
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Reason [Wakeup]'
+          type: DEPENDENT
+          key: wareason
+          delay: '0'
+          description: |
+            Wakeup reason: 
+            0=Wakeup by power-on, reset
+            3=Wakeup by modeKey
+            4=Wakeup by timer
+          applications:
+            -
+              name: Stats
+          valuemap:
+            name: IMS-Smart-RestartReasons
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.wareason
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+        -
+          name: 'Connect time WiFi AP [sec]'
+          type: DEPENDENT
+          key: wctime
+          delay: '0'
+          value_type: FLOAT
+          units: '!sec'
+          description: 'The time it takes to connect to the WiFi AP.'
+          applications:
+            -
+              name: Stats
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.wctime
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{last()}>10'
+              name: '[{HOST.NAME}] - Sensor: WiFi AP long connection time [>10sec]'
+              description: 'WiFi AP has a connection time of over 10 seconds.'
+        -
+          name: 'Fails [WiFi]'
+          type: DEPENDENT
+          key: wfails
+          delay: '0'
+          description: 'Number of failed WiFi AP connection attempts.'
+          applications:
+            -
+              name: Fails
+          preprocessing:
+            -
+              type: JSONPATH
+              params: $.wfails
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              params: 1d
+          master_item:
+            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
+          triggers:
+            -
+              expression: '{last()}>0'
+              name: '[{HOST.NAME}] - Sensor: Recent connect to WiFi AP failed'
+              description: 'The last connection to WiFi AP failed.'
+      tags:
+        -
+          tag: Contact
+          value: '{INVENTORY.CONTACT}'
+        -
+          tag: Location
+          value: '{INVENTORY.LOCATION}'
+        -
+          tag: Type
+          value: Sensor
+      macros:
+        -
+          macro: '{$MQTT_BROKER}'
+          value: localhost
+        -
+          macro: '{$MQTT_PASS}'
+        -
+          macro: '{$MQTT_TOPIC}'
+          value: imssmart
+        -
+          macro: '{$MQTT_USER}'
+      screens:
+        -
+          name: IMS-Screen
+          hsize: '2'
+          vsize: '4'
+          screen_items:
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: Temperature graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '0'
+              'y': '0'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '2'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: External temperature graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '1'
+              'y': '0'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '1'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: Air pressure graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '0'
+              'y': '1'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '2'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: Humidity graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '1'
+              'y': '1'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '1'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '0'
+              'y': '2'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '2'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '1'
+              'y': '2'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '1'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: Battery charge graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '0'
+              'y': '3'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '2'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+            -
+              resourcetype: '0'
+              style: '0'
+              resource:
+                name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
+                host: 'IMS-Smart Sensor MQTT'
+              width: '600'
+              height: '100'
+              x: '1'
+              'y': '3'
+              colspan: '1'
+              rowspan: '1'
+              elements: '0'
+              valign: '0'
+              halign: '1'
+              dynamic: '0'
+              sort_triggers: '0'
+              url: ''
+              application: ''
+              max_columns: '3'
+  triggers:
+    -
+      expression: '{IMS-Smart Sensor MQTT:dew.last()}>{IMS-Smart Sensor MQTT:tempe.last()}'
+      name: '[{HOST.NAME}] - Sensor: Temperature below dew point'
+      priority: HIGH
+      description: |
+        The dew point is the temperature to which air must be cooled to become saturated with water vapor.
+        The temperature is below that dew point. This means the device is exposed to condensation, which could damage it.
+    -
+      expression: '{IMS-Smart Sensor MQTT:dew.last()}+2>{IMS-Smart Sensor MQTT:temp.last()} or {IMS-Smart Sensor MQTT:dew.last()}+2>{IMS-Smart Sensor MQTT:tempe.last()}'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: '{IMS-Smart Sensor MQTT:dew.last()}+3<{IMS-Smart Sensor MQTT:temp.last()} or {IMS-Smart Sensor MQTT:dew.last()}+3<{IMS-Smart Sensor MQTT:tempe.last()}'
+      name: '[{HOST.NAME}] - Sensor: Temperature near dew point'
+      priority: WARNING
+      description: |
+        The dew point is the temperature to which air must be cooled to become saturated with water vapor.
+        The temperature is near the dew point. This means the device soon will be exposed to condensation, which could damage it.
+      manual_close: 'YES'
+  graphs:
+    -
+      name: 'IMS-Smart Sensor: Air pressure graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: FF4000
+          calc_fnc: ALL
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: press
+    -
+      name: 'IMS-Smart Sensor: Battery charge graph'
+      height: '150'
+      ymin_type_1: FIXED
+      ymax_type_1: FIXED
+      graph_items:
+        -
+          drawtype: FILLED_REGION
+          color: FF8A65
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: batterycharge
+    -
+      name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: FFD54F
+          yaxisside: RIGHT
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: eco2
+    -
+      name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph L'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: FFD54F
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: eco2
+    -
+      name: 'IMS-Smart Sensor: External temperature graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 00FF00
+          yaxisside: RIGHT
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: tempe
+    -
+      name: 'IMS-Smart Sensor: Humidity graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 00BFFF
+          yaxisside: RIGHT
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: hum
+    -
+      name: 'IMS-Smart Sensor: Humidity graph L'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 00BFFF
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: hum
+    -
+      name: 'IMS-Smart Sensor: Temperature graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: BOLD_LINE
+          color: FF0000
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: dew
+        -
+          sortorder: '1'
+          drawtype: GRADIENT_LINE
+          color: 00FF00
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: temp
+    -
+      name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph'
+      height: '150'
+      graph_items:
+        -
+          color: FFD54F
+          yaxisside: RIGHT
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: tvoc
+    -
+      name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
+      height: '150'
+      graph_items:
+        -
+          color: 199C0D
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: tvoc
+    -
+      name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: CE93D8
+          yaxisside: RIGHT
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: rssi
+    -
+      name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph L'
+      height: '150'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: CE93D8
+          item:
+            host: 'IMS-Smart Sensor MQTT'
+            key: rssi
+  value_maps:
+    -
+      name: IMS-Smart-IAQStatus
+      mappings:
+        -
+          value: '0'
+          newvalue: Enabled
+        -
+          value: '1'
+          newvalue: Disabled
+    -
+      name: IMS-Smart-OTAStatus
+      mappings:
+        -
+          value: '0'
+          newvalue: NO_REQUEST
+        -
+          value: '1'
+          newvalue: DEACTIVE
+        -
+          value: '2'
+          newvalue: NOT_CHANGED
+        -
+          value: '3'
+          newvalue: CHANGED
+        -
+          value: '4'
+          newvalue: SERVER_UNREACHABLE
+        -
+          value: '5'
+          newvalue: SENSOR_NOT_FOUND
+        -
+          value: '6'
+          newvalue: ERROR
+    -
+      name: IMS-Smart-RestartReasons
+      mappings:
+        -
+          value: '1'
+          newvalue: POWERON_RESET
+        -
+          value: '3'
+          newvalue: SW_RESET
+        -
+          value: '4'
+          newvalue: OWDT_RESET
+        -
+          value: '5'
+          newvalue: DEEPSLEEP_RESET
+        -
+          value: '6'
+          newvalue: SDIO_RESET
+        -
+          value: '7'
+          newvalue: TG0WDT_SYS_RESET
+        -
+          value: '8'
+          newvalue: TG1WDT_SYS_RESET
+        -
+          value: '9'
+          newvalue: RTCWDT_SYS_RESET
+        -
+          value: '10'
+          newvalue: INTRUSION_RESET
+        -
+          value: '11'
+          newvalue: TGWDT_CPU_RESET
+        -
+          value: '12'
+          newvalue: SW_CPU_RESET
+        -
+          value: '13'
+          newvalue: RTCWDT_CPU_RESET
+        -
+          value: '14'
+          newvalue: EXT_CPU_RESET
+        -
+          value: '15'
+          newvalue: RTCWDT_BROWN_OUT_RESET
+        -
+          value: '16'
+          newvalue: RTCWDT_RTC_RESET
