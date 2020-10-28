@@ -1,6 +1,6 @@
 zabbix_export:
   version: '5.2'
-  date: '2020-10-12T12:56:18Z'
+  date: '2020-10-28T09:06:00Z'
   groups:
     -
       name: IntelliMon
@@ -38,7 +38,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.batterycharge
+              parameters:
+                - $.batterycharge
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -88,10 +89,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.cfails
+              parameters:
+                - $.cfails
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -109,10 +112,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.contact
+              parameters:
+                - $.contact
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -130,10 +135,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.devicetype
+              parameters:
+                - $.devicetype
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -150,7 +157,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.dew
+              parameters:
+                - $.dew
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -167,7 +175,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.eco2
+              parameters:
+                - $.eco2
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -183,10 +192,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.enverror
+              parameters:
+                - $.enverror
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -204,10 +215,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.geolatitude
+              parameters:
+                - $.geolatitude
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -225,10 +238,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.geolongitude
+              parameters:
+                - $.geolongitude
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -243,10 +258,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.hasenv
+              parameters:
+                - $.hasenv
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -261,10 +278,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.hasiaq
+              parameters:
+                - $.hasiaq
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -279,10 +298,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.hastempe
+              parameters:
+                - $.hastempe
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -299,7 +320,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.hum
+              parameters:
+                - $.hum
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -315,10 +337,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.iaqbaseline
+              parameters:
+                - $.iaqbaseline
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -338,10 +362,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.iaqdisabled
+              parameters:
+                - $.iaqdisabled
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -361,10 +387,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.iaqerror
+              parameters:
+                - $.iaqerror
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -385,10 +413,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.iaqerrorstatus
+              parameters:
+                - $.iaqerrorstatus
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -404,10 +434,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.iaqheatingtime
+              parameters:
+                - $.iaqheatingtime
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -423,10 +455,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.interval
+              parameters:
+                - $.interval
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -444,10 +478,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.location
+              parameters:
+                - $.location
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -455,6 +491,7 @@ zabbix_export:
           type: ZABBIX_ACTIVE
           key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           delay: '0'
+          history: '0'
           trends: '0'
           value_type: TEXT
           applications:
@@ -473,10 +510,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.otaconfiginterval
+              parameters:
+                - $.otaconfiginterval
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -501,10 +540,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.otaconfigstatus
+              parameters:
+                - $.otaconfigstatus
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -520,10 +561,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.otafwinterval
+              parameters:
+                - $.otafwinterval
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -541,7 +584,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.press
+              parameters:
+                - $.press
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -563,10 +607,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.rreason
+              parameters:
+                - $.rreason
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -588,7 +634,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.rssi
+              parameters:
+                - $.rssi
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -610,7 +657,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.sctime
+              parameters:
+                - $.sctime
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -628,10 +676,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.serial
+              parameters:
+                - $.serial
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -646,10 +696,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.sfails
+              parameters:
+                - $.sfails
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -671,7 +723,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.temp
+              parameters:
+                - $.temp
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -689,7 +742,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.tempe
+              parameters:
+                - $.tempe
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -705,10 +759,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.tempeerror
+              parameters:
+                - $.tempeerror
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -723,10 +779,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.tfails
+              parameters:
+                - $.tfails
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -742,7 +800,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.tvoc
+              parameters:
+                - $.tvoc
               error_handler: DISCARD_VALUE
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
@@ -760,7 +819,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.vcc
+              parameters:
+                - $.vcc
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -782,10 +842,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.version
+              parameters:
+                - $.version
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -806,10 +868,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.wareason
+              parameters:
+                - $.wareason
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
@@ -826,7 +890,8 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.wctime
+              parameters:
+                - $.wctime
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -846,10 +911,12 @@ zabbix_export:
           preprocessing:
             -
               type: JSONPATH
-              params: $.wfails
+              parameters:
+                - $.wfails
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
-              params: 1d
+              parameters:
+                - 1d
           master_item:
             key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           triggers:
@@ -878,172 +945,108 @@ zabbix_export:
           value: imssmart
         -
           macro: '{$MQTT_USER}'
-      screens:
+      dashboards:
         -
           name: IMS-Screen
-          hsize: '2'
-          vsize: '4'
-          screen_items:
+          widgets:
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: Temperature graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '0'
-              'y': '0'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '2'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: Temperature graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: External temperature graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '1'
-              'y': '0'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '1'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              x: '12'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: External temperature graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: Air pressure graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '0'
-              'y': '1'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '2'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              'y': '5'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: Air pressure graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: Humidity graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '1'
-              'y': '1'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '1'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              x: '12'
+              'y': '5'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: Humidity graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '0'
-              'y': '2'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '2'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              'y': '10'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '1'
-              'y': '2'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '1'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              x: '12'
+              'y': '10'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: Battery charge graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '0'
-              'y': '3'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '2'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              'y': '15'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: Battery charge graph'
+                    host: 'IMS-Smart Sensor MQTT'
             -
-              resourcetype: '0'
-              style: '0'
-              resource:
-                name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
-                host: 'IMS-Smart Sensor MQTT'
-              width: '600'
-              height: '100'
-              x: '1'
-              'y': '3'
-              colspan: '1'
-              rowspan: '1'
-              elements: '0'
-              valign: '0'
-              halign: '1'
-              dynamic: '0'
-              sort_triggers: '0'
-              url: ''
-              application: ''
-              max_columns: '3'
+              type: GRAPH_CLASSIC
+              x: '12'
+              'y': '15'
+              width: '12'
+              height: '5'
+              fields:
+                -
+                  type: GRAPH
+                  name: graphid
+                  value:
+                    name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
+                    host: 'IMS-Smart Sensor MQTT'
   triggers:
     -
       expression: '{IMS-Smart Sensor MQTT:dew.last()}>{IMS-Smart Sensor MQTT:tempe.last()}'

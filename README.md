@@ -68,7 +68,6 @@ Then switch to Macros and fill out the fields with the credentials:
 - `{$MQTT_USER}`: public
 - `{$MQTT_PASS}`: intellitrend
 - `{$MQTT_TOPIC}`: office/bielefeld/salesroom
-- Port: 1883
 
 **Note:** This MQTT account allows to subscribe to the topic `office/bielefeld/#` , publishing of messages is not possible.
 
