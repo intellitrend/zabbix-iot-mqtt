@@ -15,12 +15,12 @@ This repository contains instructions and templates that allows to test out the 
 
 The demonstration setup consists of four [IMS-Smart sensors](https://www.intellitrend.de/cms/en/intellimon/ims-smart-sensors/5/ims-smart-zabbix-sensor) running a firmware with MQTT support. They publish their data every 10 minutes as a JSON-string to an MQTT Broker on `iot.intellitrend.de` using the following MQTT topics:
 
-| Name          | Topic                         |
-| ------------- | ----------------------------- |
-| Sales Room    | office/bielefeld/salesroom    |
-| Server Room   | office/bielefeld/serverroom   |
-| Training Room | office/bielefeld/trainingroom |
-| Support Room  | office/bielefeld/supportroom  |
+| Name          | Hostname            | Topic                         |
+| ------------- | ------------------- | ----------------------------- |
+| Sales Room    | im.ims-040B0BBF713C | office/bielefeld/salesroom    |
+| Server Room   | im.ims-603E9BC40A24 | office/bielefeld/serverroom   |
+| Training Room | im.ims-94B71112CFA4 | office/bielefeld/trainingroom |
+| Support Room  | im.ims-80D478BF713C | office/bielefeld/supportroom  |
 
 A message may look like this:
 
@@ -54,7 +54,7 @@ Examples:
 
 First, import the included template file [Zabbix_Template-IMS-Smart_Sensor_V1.6_5.2_MQTT.yaml](templates/Zabbix_Template-IMS-Smart_Sensor_V1.6_5.2_MQTT.yaml) 
 
-Then create a new host. Starting with the first one, name it "Sales Room":
+Then create a new host. Starting with the first one, name it "Sales Room" and set `im.ims-040B0BBF713C` as Host name:
 
 ![image-20201012154950792](images/image-20201012154950792.png)
 
@@ -75,9 +75,9 @@ Then switch to Macros and fill out the fields with the credentials:
 
 Finally, click "Add" to add the new host.
 
-Now, you need to configure a Zabbix Agent 2 instance to allow active checks for that host, which is required for `mqtt.get`. For that, the `Hostname` property needs to be changed in the config by adding `Sales Room`. If there's already a host name defined, separate the new one with a comma (multiple Hostnames are a new feature of the Zabbix Agent 2 in Zabbix 5.2).
+Now, you need to configure a Zabbix Agent 2 instance to allow active checks for that host, which is required for `mqtt.get`. For that, the `Hostname` property needs to be changed in the Zabbix Agent 2 config by adding `im.ims-040B0BBF713C`. If there's already a host name defined, separate the new one with a comma (multiple Hostnames is a new feature of the Zabbix Agent 2 in Zabbix 5.2).
 
-For the remaining sensors, it's easiest to clone the first host and update the host name and topic.
+For the remaining sensors, it's easiest to clone the first host and update the visible name, host name and topic.
 
-If you're in a hurry, you can also just import all demonstration hosts by using the [Zabbix_Hosts-Sensors.yaml](templates/Zabbix_Hosts-Sensors.yaml).
+If you're in a hurry, you can also just import all demonstration hosts by using the [Zabbix_Hosts-Sensors.yaml](templates/Zabbix_Hosts-Sensors.yaml) and set your `Hostname` property to `im.ims-040B0BBF713C,im.ims-603E9BC40A24,im.ims-94B71112CFA4,im.ims-80D478BF713C`.
 
