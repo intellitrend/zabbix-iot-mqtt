@@ -1,13 +1,13 @@
 zabbix_export:
   version: '5.2'
-  date: '2020-10-28T09:06:00Z'
+  date: '2021-12-13T09:36:36Z'
   groups:
     -
       name: IntelliMon
   templates:
     -
-      template: 'IMS-Smart Sensor MQTT'
-      name: 'IMS-Smart Sensor MQTT'
+      template: 'IMS-Smart Sensor V1.6 MQTT'
+      name: 'IMS-Smart Sensor V1.6 MQTT'
       description: 'Template for wireless IntelliMon sensor with MQTT support, version 1.6'
       groups:
         -
@@ -30,6 +30,7 @@ zabbix_export:
           key: batterycharge
           delay: '0'
           history: 180d
+          value_type: FLOAT
           units: '%'
           description: 'Battery charge in percent.'
           applications:
@@ -62,8 +63,8 @@ zabbix_export:
               dependencies:
                 -
                   name: '[{HOST.NAME}] - Sensor: Battery charge low [<15%]'
-                  expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}<15'
-                  recovery_expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}>20'
+                  expression: '{IMS-Smart Sensor V1.6 MQTT:batterycharge.last()}<15'
+                  recovery_expression: '{IMS-Smart Sensor V1.6 MQTT:batterycharge.last()}>20'
             -
               expression: '{last()}<50'
               recovery_mode: RECOVERY_EXPRESSION
@@ -75,8 +76,8 @@ zabbix_export:
               dependencies:
                 -
                   name: '[{HOST.NAME}] - Sensor: Battery charge low [<30%]'
-                  expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}<30'
-                  recovery_expression: '{IMS-Smart Sensor MQTT:batterycharge.last()}>35'
+                  expression: '{IMS-Smart Sensor V1.6 MQTT:batterycharge.last()}<30'
+                  recovery_expression: '{IMS-Smart Sensor V1.6 MQTT:batterycharge.last()}>35'
         -
           name: 'Fails [connection]'
           type: DEPENDENT
@@ -491,33 +492,12 @@ zabbix_export:
           type: ZABBIX_ACTIVE
           key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
           delay: '0'
-          history: '0'
+          history: 1d
           trends: '0'
           value_type: TEXT
           applications:
             -
               name: 'Sensor data'
-        -
-          name: 'OTA config interval [measurements]'
-          type: DEPENDENT
-          key: otaconfiginterval
-          delay: '0'
-          units: Measurements
-          description: 'Number of measurements before checking for a configuration update.'
-          applications:
-            -
-              name: Stats
-          preprocessing:
-            -
-              type: JSONPATH
-              parameters:
-                - $.otaconfiginterval
-            -
-              type: DISCARD_UNCHANGED_HEARTBEAT
-              parameters:
-                - 1d
-          master_item:
-            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
         -
           name: 'OTA config [status]'
           type: DEPENDENT
@@ -542,27 +522,6 @@ zabbix_export:
               type: JSONPATH
               parameters:
                 - $.otaconfigstatus
-            -
-              type: DISCARD_UNCHANGED_HEARTBEAT
-              parameters:
-                - 1d
-          master_item:
-            key: 'mqtt.get[{$MQTT_BROKER},{$MQTT_TOPIC},{$MQTT_USER},{$MQTT_PASS}]'
-        -
-          name: 'OTA firmware interval [measurements]'
-          type: DEPENDENT
-          key: otafwinterval
-          delay: '0'
-          units: Measurements
-          description: 'Number of measurements before checking for a firmware update.'
-          applications:
-            -
-              name: Stats
-          preprocessing:
-            -
-              type: JSONPATH
-              parameters:
-                - $.otafwinterval
             -
               type: DISCARD_UNCHANGED_HEARTBEAT
               parameters:
@@ -959,7 +918,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: Temperature graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               x: '12'
@@ -971,7 +930,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: External temperature graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               'y': '5'
@@ -983,7 +942,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: Air pressure graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               x: '12'
@@ -996,7 +955,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: Humidity graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               'y': '10'
@@ -1008,7 +967,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               x: '12'
@@ -1021,7 +980,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               'y': '15'
@@ -1033,7 +992,7 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: Battery charge graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
             -
               type: GRAPH_CLASSIC
               x: '12'
@@ -1046,20 +1005,22 @@ zabbix_export:
                   name: graphid
                   value:
                     name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
-                    host: 'IMS-Smart Sensor MQTT'
+                    host: 'IMS-Smart Sensor V1.6 MQTT'
   triggers:
     -
-      expression: '{IMS-Smart Sensor MQTT:dew.last()}>{IMS-Smart Sensor MQTT:tempe.last()}'
+      expression: '{IMS-Smart Sensor V1.6 MQTT:dew.last()}>{IMS-Smart Sensor V1.6 MQTT:tempe.last()}'
       name: '[{HOST.NAME}] - Sensor: Temperature below dew point'
+      status: DISABLED
       priority: HIGH
       description: |
         The dew point is the temperature to which air must be cooled to become saturated with water vapor.
         The temperature is below that dew point. This means the device is exposed to condensation, which could damage it.
     -
-      expression: '{IMS-Smart Sensor MQTT:dew.last()}+2>{IMS-Smart Sensor MQTT:temp.last()} or {IMS-Smart Sensor MQTT:dew.last()}+2>{IMS-Smart Sensor MQTT:tempe.last()}'
+      expression: '{IMS-Smart Sensor V1.6 MQTT:dew.last()}+2>{IMS-Smart Sensor V1.6 MQTT:temp.last()} or {IMS-Smart Sensor V1.6 MQTT:dew.last()}+2>{IMS-Smart Sensor V1.6 MQTT:tempe.last()}'
       recovery_mode: RECOVERY_EXPRESSION
-      recovery_expression: '{IMS-Smart Sensor MQTT:dew.last()}+3<{IMS-Smart Sensor MQTT:temp.last()} or {IMS-Smart Sensor MQTT:dew.last()}+3<{IMS-Smart Sensor MQTT:tempe.last()}'
+      recovery_expression: '{IMS-Smart Sensor V1.6 MQTT:dew.last()}+3<{IMS-Smart Sensor V1.6 MQTT:temp.last()} or {IMS-Smart Sensor V1.6 MQTT:dew.last()}+3<{IMS-Smart Sensor V1.6 MQTT:tempe.last()}'
       name: '[{HOST.NAME}] - Sensor: Temperature near dew point'
+      status: DISABLED
       priority: WARNING
       description: |
         The dew point is the temperature to which air must be cooled to become saturated with water vapor.
@@ -1075,7 +1036,7 @@ zabbix_export:
           color: FF4000
           calc_fnc: ALL
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: press
     -
       name: 'IMS-Smart Sensor: Battery charge graph'
@@ -1087,7 +1048,7 @@ zabbix_export:
           drawtype: FILLED_REGION
           color: FF8A65
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: batterycharge
     -
       name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph'
@@ -1098,7 +1059,7 @@ zabbix_export:
           color: FFD54F
           yaxisside: RIGHT
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: eco2
     -
       name: 'IMS-Smart Sensor: Equivalent carbon-dioxide eCO2 graph L'
@@ -1108,7 +1069,7 @@ zabbix_export:
           drawtype: GRADIENT_LINE
           color: FFD54F
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: eco2
     -
       name: 'IMS-Smart Sensor: External temperature graph'
@@ -1119,7 +1080,7 @@ zabbix_export:
           color: 00FF00
           yaxisside: RIGHT
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: tempe
     -
       name: 'IMS-Smart Sensor: Humidity graph'
@@ -1130,7 +1091,7 @@ zabbix_export:
           color: 00BFFF
           yaxisside: RIGHT
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: hum
     -
       name: 'IMS-Smart Sensor: Humidity graph L'
@@ -1140,7 +1101,7 @@ zabbix_export:
           drawtype: GRADIENT_LINE
           color: 00BFFF
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: hum
     -
       name: 'IMS-Smart Sensor: Temperature graph'
@@ -1150,14 +1111,14 @@ zabbix_export:
           drawtype: BOLD_LINE
           color: FF0000
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: dew
         -
           sortorder: '1'
           drawtype: GRADIENT_LINE
           color: 00FF00
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: temp
     -
       name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph'
@@ -1167,7 +1128,7 @@ zabbix_export:
           color: FFD54F
           yaxisside: RIGHT
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: tvoc
     -
       name: 'IMS-Smart Sensor: total volatile organic compound TVOC graph L'
@@ -1176,7 +1137,7 @@ zabbix_export:
         -
           color: 199C0D
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: tvoc
     -
       name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph'
@@ -1187,7 +1148,7 @@ zabbix_export:
           color: CE93D8
           yaxisside: RIGHT
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: rssi
     -
       name: 'IMS-Smart Sensor: WiFi RSSI [dBm] graph L'
@@ -1197,7 +1158,7 @@ zabbix_export:
           drawtype: GRADIENT_LINE
           color: CE93D8
           item:
-            host: 'IMS-Smart Sensor MQTT'
+            host: 'IMS-Smart Sensor V1.6 MQTT'
             key: rssi
   value_maps:
     -

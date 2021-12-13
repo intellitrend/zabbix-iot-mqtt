@@ -6,11 +6,11 @@ zabbix_export:
       name: IntelliMon
   hosts:
     -
-      host: im.ims-040B0BBF713C
+      host: ims-040B0BBF713C
       name: 'Sales Room'
       templates:
         -
-          name: 'IMS-Smart Sensor MQTT'
+          name: 'IMS-Smart Sensor V1.6 MQTT'
       groups:
         -
           name: IntelliMon
@@ -36,11 +36,11 @@ zabbix_export:
         location_lon: '8.565642'
       inventory_mode: AUTOMATIC
     -
-      host: im.ims-80D478BF713C
+      host: ims-54711212CFA4
       name: 'Support Room'
       templates:
         -
-          name: 'IMS-Smart Sensor MQTT'
+          name: 'IMS-Smart Sensor V1.6 MQTT'
       groups:
         -
           name: IntelliMon
@@ -66,11 +66,11 @@ zabbix_export:
         location_lon: '8.565642'
       inventory_mode: AUTOMATIC
     -
-      host: im.ims-94B71112CFA4
+      host: ims-94B71112CFA4
       name: 'Training Room'
       templates:
         -
-          name: 'IMS-Smart Sensor MQTT'
+          name: 'IMS-Smart Sensor V1.6 MQTT'
       groups:
         -
           name: IntelliMon
@@ -96,11 +96,11 @@ zabbix_export:
         location_lon: '8.565642'
       inventory_mode: AUTOMATIC
     -
-      host: im.ims-603E9BC40A24
+      host: ims-603E9BC40A24
       name: 'Server Room'
       templates:
         -
-          name: 'IMS-Smart Sensor MQTT'
+          name: 'IMS-Smart Sensor V1.6 MQTT'
       groups:
         -
           name: IntelliMon
